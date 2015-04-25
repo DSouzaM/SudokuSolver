@@ -1,0 +1,11 @@
+Each value (1-9) has a 9x9 byte array that will hold a value of 0 or 1. 
+0 indicates that a cell is a possible location for the value, while 1 indicates that such a position is impossible. 
+
+At the start of the program, each array will simply have zeroes.
+For every initial number in the puzzle and every value added later, the row and column of said number will become a 1 for each value array since this position is no longer possible.
+In addition, for the number's corresponding value array (if the number in the puzzle was 2, then the value array for 2), all cells in the same section, row, and column become 1.
+
+general algorithm (which should work as long as there are no situations where one must try multiple values and eliminate the ones which cause later errors):
+going from value array to value array, see if any section has only 1 zero. if so, then said position must be the location of the value. add it to the grid.
+change all value arrays to reflect the addition of this number to the grid.
+repeat until solution is found
