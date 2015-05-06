@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
@@ -9,12 +11,11 @@ public class Main {
 				grid[row][col] = input.nextByte();
 			}
 		}
-		SudokuSolver solver = new SudokuSolver(grid);
-		solver.printGrid();
-		for (int i = 1; i<=9; i++) {
-			System.out.println(i + ".");
-			solver.printUsedGrid(i);
-		}
+		SudokuSolver solver = new SudokuSolver();
+		ArrayList<byte[][]> solutions = solver.solve(grid);
+		System.out.println();
+		//solver.printGrid(grid);
+
 		
 		
 	}
