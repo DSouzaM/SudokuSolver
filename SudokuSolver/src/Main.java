@@ -11,14 +11,11 @@ public class Main {
 			}
 		}
 		SudokuSolver solver = new SudokuSolver();
-		ArrayList<byte[][]> solutions = solver.getSolution(grid);
-		if (solutions.size() == 0) {
-			System.out.println("There are no solutions.");
+		byte[][] solution = solver.solve(grid);
+		if (solution.length == 1) {
+			System.out.println("There is no solution.");
 		} else {
-			for (int i = 0; i < solutions.size(); i++) {
-				System.out.println("Solution " + (i + 1) + "\n"
-						+ SudokuSolver.gridToString(solutions.get(i)) + "\n");
-			}
+			System.out.println(SudokuSolver.gridToString(solution));
 		}
 
 	}

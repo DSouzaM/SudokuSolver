@@ -4,20 +4,9 @@ import java.util.Arrays;
 
 public class SudokuSolver {
 	
-	// Calls the private solve() method and removes all failed cases before returning an ArrayList of solutions (some puzzles have multiple solutions).
-	public ArrayList<byte[][]> getSolution(byte[][] grid) {
-		ArrayList<byte[][]> solutions = solve(grid);
-		for (int i = 0; i < solutions.size(); i++) {
-			if (solutions.get(i)[0][0] == 0) {
-				solutions.remove(i);
-				i--;
-			}
-		}
-		return solutions;
-	}
-	// Recursively solves the grid input, returning an ArrayList of byte[][]s (has both the valid solutions as well as empty byte[][]s from failed routes).
-	private ArrayList<byte[][]> solve(byte[][] g) {
-		ArrayList<byte[][]> solutions = new ArrayList<byte[][]>();
+	
+	// Recursively solves the grid input, returning the solved byte[][].
+	public byte[][] solve(byte[][] g) {
 		byte[][] grid = twoDimensionalCopy(g);
 		byte[][] numPossible = getNumPossible(grid);
 		//  Fills cells where only one value is possible. 
@@ -40,8 +29,7 @@ public class SudokuSolver {
 		}
 		// If the grid is full, then it must be a solution since all values added are first checked to be valid.
 		if (isFull(grid)) {
-			solutions.add(grid);
-			return solutions;
+			return grid;
 		}
 		else {
 			for (int row = 0; row < 9; row++) {
@@ -49,8 +37,7 @@ public class SudokuSolver {
 					// If there exists an empty cell on the grid with no possible values, return an empty byte[][].
 					if (cellEmpty(row, col, grid)
 							&& getPossibleValues(row, col, grid).size() == 0) {
-						solutions.add(new byte[9][9]);
-						return solutions;
+						return new byte[1][1];
 					}
 				}
 			}
@@ -71,18 +58,19 @@ public class SudokuSolver {
 			
 			ArrayList<Byte> pValues = getPossibleValues(lowestRow, lowestCol,
 					grid);
-			ArrayList<byte[][]> pGrids = new ArrayList<byte[][]>();
 
 
 			// For each of the possible values for the cell, enter the value in the grid and call the function again. Add all the results to the ArrayList, then return the ArrayList.
 			for (byte pValue : pValues) {
 				byte[][] newGrid = twoDimensionalCopy(grid);
 				enterValue(pValue, lowestRow, lowestCol, newGrid);
-				pGrids.add(newGrid);				
-				solutions.addAll(solve(newGrid));
+				newGrid = solve(newGrid);
+				if (newGrid[0][0] != 0){
+					return newGrid;
+				}
 			}			
-			return solutions;
 		}
+		return new byte[1][1];
 	}
 	// Returns a byte[][] with cells representing the number of possible values for each cell.
 	private byte[][] getNumPossible(byte[][] grid) {
